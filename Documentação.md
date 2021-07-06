@@ -305,6 +305,7 @@ fun main (){
     // true
 
 }
+```
 ## Hierarquia de classes e subclasses
 
     *criar uma hierarquia de classes, que é uma árvore de classes em que as classes filhas herdam a funcionalidade das classes pai. 
@@ -326,5 +327,3 @@ fun main (){
     *usar a construção with para fazer várias chamadas na mesma instância do objeto;
 
     *importar a funcionalidade da biblioteca kotlin.math.
-
-```
