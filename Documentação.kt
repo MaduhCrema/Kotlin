@@ -305,4 +305,26 @@ fun main (){
     // true
 
 }
+## Hierarquia de classes e subclasses
+
+    *criar uma hierarquia de classes, que é uma árvore de classes em que as classes filhas herdam a funcionalidade das classes pai. 
+     Propriedades e funções são herdadas por subclasses;
+
+    *criar uma classe abstract em que algumas funcionalidades podem ser implementados pelas subclasses. 
+    Portanto, uma classe abstract não pode ser instanciada;
+
+    *criar subclasses de uma classe abstract;
+
+    *usar a palavra-chave override para modificar propriedades e funções em subclasses;
+
+    *usar a palavra-chave super para referenciar funções e propriedades na classe pai;
+
+    *criar uma classe open para que ela possa ser transformada em subclasse;
+
+    *criar uma propriedade private, para que só possa ser usada dentro da classe;
+
+    *usar a construção with para fazer várias chamadas na mesma instância do objeto;
+
+    *importar a funcionalidade da biblioteca kotlin.math.
+
 ```
