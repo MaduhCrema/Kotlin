@@ -1,3 +1,3 @@
 # Kotlin 💻
 ### Kotlin codes 👩‍💻
-#### Trying to learn everyday 
+#### *Trying to learn everyday*
