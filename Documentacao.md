@@ -306,27 +306,490 @@ fun main (){
 
 }
 ```
+# Classes
+### Kotlin não é uma linguagem em que todo o código precisa estar contido em uma classe. Ela incorpora a programação procedural e funcional e, caso seja necessário, se pode utilizar os objetos nativos, implementando as regras de negócio do projeto com funções. Porém, quando trabalhamos de forma orientada a objetos nessa linguagem devemos nos atentar para os diversos recursos que ela dispõe para a escrita de classes, assunto tratado aqui.
+
+### Uma classe é um bloco de construção de software fundamental, encontrado na grande maioria das linguagens orientadas a objetos e, dessa forma, também presente em Kotlin. Elas são usadas para criar novos tipos de dados, utilizando uma estrutura composta por métodos e variáveis que podem possuir os seus próprios tipos.
+
+### *Abaixo, na Figura 1 vemos uma visão geral da estrutura de uma classe em Kotlin.*
+
+![Alt Text](https://www.devmedia.com.br/arquivos/Salas/Linguagem/kotlin/113/classes_artigo.png)
+
+## Declaração de classes
+
+### Em Kotlin, um arquivo pode conter diferentes declarações de classes, as quais são feitas utilizando a palavra reservada class. Abaixo apresentamos uma declaração de classe feita da forma mais simples possível em Kotlin.
+
+## class Medicamento
+
+### No exemplo acima, uma vez que a classe Medicamento não possui um corpo, podemos omitir as chaves que estariam na frente do seu nome.
+## Construtores
+
+### Um construtor é uma função especial da classe, utilizada na criação e inicialização dos objetos derivados dela.
+
+### Kotlin distingue os construtores de uma classe entre primários e secundários. O construtor primário de uma classe faz parte do seu cabeçalho e pode conter apenas uma lista de parâmetros, assim como apresentado abaixo.
+```kt
+class Medicamento(val formula: String, val posologia: String)
+```
+### Dado que o construtor primário não pode conter nenhum código, uma classe pode conter um ou mais blocos de inicialização, que são executados na ordem como são declarados no corpo da mesma. Nesses blocos de inicialização, conforme visto no Código 1, podemos acessar quaisquer parâmetros que estejam presentes no construtor primário. A relação entre construtor primário e propriedades será detalhada ainda neste artigo.
+```kt
+class Medicamento(val formula: String, val posologia: String) {
+     init {
+         require(formula.trim().length > 0) {
+            "Informe uma fórmula"
+         }
+
+         require(posologia.trim().length > 0) {
+            "Informe uma posologia"
+         }
+     }
+}
+```
+*Código 1. Blocos de inicialização*
+
+### Além do construtor primário, uma classe também pode declarar um ou mais construtores secundários. Esses, por sua vez, sempre devem utilizar a palavra reservada constructor em suas declarações, mesmo quando um modificador de acesso for omitido ou nenhuma anotação for utilizada, como mostra o Código 2.
+```kt
+class Medicamento {
+    constructor(formula: String, posologia: String)
+}
+```
+*Código 2. Construtor secundário*
+
+### No caso de uma classe possuir mais de um construtor, sendo um deles primário, cada construtor secundário deve delegar ao construtor primário. Quando ambos os construtores estiverem na mesma classe, a delegação de um construtor para o outro é feita com a palavra reservada this.
+
+### Podemos utilizar valores padrão do construtor delegado de uma classe. Para demonstrar isso vamos adicionar um terceiro parâmetro no construtor para a contraindicação do medicamento. Considerando que a classe Medicamento possa ser inicializada sem um valor para essa propriedade, caso no qual o mesmo passará a ser uma mensagem padrão, poderíamos modelá-la da seguinte forma apresentada no Código 3.
+```kt
+class Medicamento(val formula: String, posologia: String, val contraindicacao: String) {
+
+     constructor(formula: String, posologia: String): this(formula, posologia,
+          "Este medicamento não é indicado para pessoas alérgicas a $formula")
+}
+```
+*Código 3. Valores padrão do construtor delegado*
+
+### Dessa forma, na delegação do construtor this(formula, posologia, "Este medicamento não é indicado para pessoas alérgicas a $formula") informamos um valor padrão para a propriedade contraindicacao e assim a classe poderá ser instanciada com ou sem esse terceiro parâmetro, como mostra o Código 4.
+```kt
+val medicamento1 = Medicamento("C8H9NO2", "...")
+val medicamento2 = Medicamento("C8H9NO2", "...", "Minha contraindicação")
+```
+*Código 4. Instanciando uma classe com ou sem parâmetros*
+
+### No exemplo acima, o objeto medicamento1 será iniciado com o valor padrão para a propriedade contraindicacao, que é "Este medicamento não é indicado para pessoas alérgicas a $formula". Para o objeto medicamento2, o valor da propriedade contraindicacao será aquele informado no construtor, que é "Minha contraindicação".
+## Construtores e propriedades
+
+### O construtor primário age de forma diferente do construtor secundário quanto a geração de propriedades para a classe na qual eles são declarados. Essa abordagem impede que as propriedades de uma classe variem de acordo com os parâmetros declarados nos construtores, uma vez que a geração de propriedades é limitada ao construtor primário de uma classe.
+
+*Para demonstrar isso observe a declaração da classe Medicamento no Código 5.*
+```kt
+class Medicamento {
+    constructor(formula: String, posologia: String)
+}
+```
+*Código 5.Impedindo as propriedades de variarem*
+
+### Diferentemente do construtor primário, os parâmetros do construtor secundário não gerarão propriedades, visto que ao tentar executar um código como o Código 6, será gerado um erro de compilação.
+```kt
+val medicamento: Medicamento = Medicamento("", "")
+medicamento.formula
+```
+**Error:(10, 17) Kotlin: Unresolved reference: formula**
+
+*Código 6. Erro de compilação*
+
+### Sendo assim, nesse caso é obrigatório declarar uma propriedade na classe Medicamento, a qual poderá receber o valor do parâmetro do construtor e ser acessada a partir de uma instância, como visto acima.
+
+*Podemos eliminar o erro ao acessar a propriedade formula, conforme o Código 7.*
+```kt
+class Medicamento {
+     val formula: String
+
+     constructor(formula: String, posologia: String) {
+        this.formula = formula
+     }
+}
+```
+*Código 7. Eliminando o erro de compilação*
+
+### Assim, uma classe em Kotlin pode possuir propriedades declaradas em seu corpo explicitamente. Essas propriedades podem ser mutáveis, quando declaradas com a palavra reservada var, ou somente leitura, quando declaradas com a palavra reservada val. Caso elas sejam declaradas imutáveis, será necessário inicializá-las, o que pode ser feito no construtor secundário da classe, como no exemplo acima.
+## Imutabilidade dos parâmetros dos construtores secundários
+
+### Conforme demonstrado anteriormente, os parâmetros do construtor secundário são declarados sem utilizar as palavras reservadas val ou var, como apresentado no Código 8.
+```kt
+class Medicamento {
+    constructor(formula: String, posologia: String)
+}
+```
+*Código 8. Imutabilidade dos parâmetros*
+
+### Caso uma tentativa de fazer o contrário seja feita, digamos declarando a fórmula como val formula: String, um erro de compilação será emitido com a seguinte mensagem apresentada no Código 9.
+
+**Kotlin: 'val' on secondary constructor parameter is not allowed**
+
+**Código 9. Erro de Compilação**
+
+### Em Kotlin, tanto os parâmetros de funções quanto os de construtores são imutáveis por definição, o que elimina a necessidade de se utilizar val ou var nesse caso.
+
+### Em adendo, a utilização de val ou var em construtores é restrita ao construtor primário de uma classe para definir a mutabilidade das suas propriedades, será imutável ou não, dado que apenas ele pode gerar propriedades para uma classe.
+
+### Por exemplo, digamos que a fórmula de um medicamento nunca possa alterada, uma vez que seja definida no momento da criação de uma instância, mas que a sua posologia depende de uma regra externa a essa classe. Dessa forma, podemos modelar a classe Medicamento conforme apresentado a seguir:
+```kt
+class Medicamento(val formula: String, var posologia: String)
+```
+### Tendo sido o parâmetro formula declarado imutável, a propriedade homônima da classe Medicamento também será somente leitura. Ao tentar atribuir valor a ela a partir de uma instância o seguinte erro será apresentado:
+
+**Error:(8, 5) Kotlin: Val cannot be reassigned**
+
+### O mesmo erro não ocorrerá ao atribuir valor a propriedade posologia a partir de uma instância da classe Medicamento, uma vez que o parâmetro posologia, presente no construtor primário, foi declarado mutável.
+## Instanciando uma classe
+
+### Para criar uma instância de uma classe usamos seu nome e construtor. Em Koltin não utilizamos a palavra-chave new, como mostra o Código 10.
+```kt
+class Medicamento(val formula: String, val posologia: String) {
+}
+
+val medicamento = Medicamento("C8H9NO2", "...")
+```
+*Código 10. Sem o uso do new*
+
+### Aqui devemos observar que se uma classe possui um construtor, sendo ele primário ou secundário, o mesmo deve ser invocado. Por exemplo, no Código 11 a classe Medicamento possui um construtor secundário, o que torna obrigatório instanciá-la da forma Medicamento("C8H9NO2", "...").
+```kt
+class Medicamento {
+    constructor(formula: String, posologia: String)
+}
+```
+*Código 11. Invocando construtor*
+
+### Caso isso não seja feito e a classe seja instanciada como Medicamento(), sem que os argumentos sejam fornecidos para o construtor, teremos um erro de compilação com a mensagem Error:(10, 35) Kotlin: No value passed for parameter 'formula' Error:(10, 35) Kotlin: No value passed for parameter 'posologia', onde formula e posologia são propriedades da classe.
+## Funções membro
+
+### Funções membro são funções declaradas dentro de classes. As regras que aprendemos anteriormente para a escrita de funções também se aplicam aqui com uma exceção, funções membro podem utilizar a palavra-chave this para referenciar a instância atual.
+
+### Funções membro sempre devem ser invocadas a partir de instâncias da classe. No Código 12 vemos um exemplo onde invocamos uma função a partir de uma instância de uma classe Medicamento.
+```kt
+class Medicamento(val formula: String, val posologia: String) {
+
+    fun contem(formula: String) = this.formula.contains(formula, ignoreCase = true)
+}
+
+fun main() {
+    val medicamento = Medicamento("C8H9NO2", "...")
+
+    if (medicamento.contem("C8H9NO2")) {
+        println("Este medicamento contém paracetamol")
+    }
+}
+```
+*Código 12. Funções membro*
+
+### Observe que na Linha 3 utilizamos this para diferenciar entre a propriedade e o parâmetro formula.
+
+#### Tenha cuidado ao usar this em classes que possuam apenas um construtores secundários, uma vez que eles não geram propriedades e, portanto, devem iniciar a classe ou delegar isso para um outro construtor. Entendido isso, caso uma classe possua apenas um construtor secundário ela deve conter propriedades que precisam ser iniciadas dentro dele.
+
+### Por exemplo, o Código 13 vai falhar ao usarmos a palavra-chave this, pois a classe não possui uma propriedade chamada formula.
+
+```kt
+class Medicamento {
+    constructor(formula: String, posologia: String)
+
+    fun contem(formula: String) = this.formula.contains(formula, ignoreCase = true)
+}
+```
+*Código 13. Falha ao usar a palavra-chave this*
+
+#### No Código 13 o erro emitido pelo compilador será Error:(6, 40) Kotlin: Unresolved reference: formula. Para corrigir esse erro a classe precisa iniciar uma propriedade chamada formula no construtor secundário, como mostra o Código 14.
+```kt
+class Medicamento {
+    val formula: String
+    val posologia: String
+
+    constructor(formula: String, posologia: String) {
+        this.formula = formula
+        this.posologia = posologia
+    }
+
+    fun contem(formula: String) = this.formula.contains(formula, ignoreCase = true)
+}
+```
+*Código 14. Iniciando propriedade*
+
+### Contudo, o código acima é desnecessariamente longo e nesses casos podemos declarar a classe com um construtor primário, como vemos no Código 15.
+```kt
+class Medicamento(val formula: String, val posologia: String) {
+
+    fun contem(formula: String) = this.formula.contains(formula, ignoreCase = true)
+}
+```
+*Código 15. Declara a classe com um construtor primário*
+
+### Sendo assim, o código acima é equivalente ao anterior e também resolve o problema do this, porém de um jeito mais sucinto.
+## Construtores e blocos de inicialização
+
+### A delegação de um construtor secundário para o construtor primário ocorrerá como sendo a primeira instrução no construtor secundário. Isso quer dizer que, uma vez que eles passam a fazer parte do construtor primário, cada bloco de inicialização será executado antes de qualquer construtor secundário.
+
+### Fundamentalmente, caso uma classe não possua nenhum construtor e não seja abstrata, um construtor público vazio lhe será atribuído. Supondo que nessa mesma classe não exista um construtor primário declarado, a delegação ocorrerá de forma implícita, como demonstrado no Código 16.
+```kt
+class Medicamento {
+     val formula: String
+
+     constructor(formula: String, posologia: String) {
+         this.formula = formula
+
+         println("Construtor secundário")
+     }
+
+     init {
+         println("Bloco de inicialização")
+     }
+}
+```
+*Código 16. Delegação implícita*
+
+### No exemplo acima, não importando a ordem da declaração do construtor secundário e do bloco de inicialização, as mensagens exibidas serão “Bloco de inicialização” e “Construtor secundário”, nessa ordem.
+## Níveis de acesso
+
+### Em Kotlin, não informar um nível de acesso para um tipo faz com que o modificador public seja automaticamente aplicado. Além desse, geralmente não utilizado devido a redundância que causa, Kotlin possui três níveis de acesso. Dentre eles, Protected pode ser utilizado apenas por classes aninhadas. Quando utilizado em nível de arquivo, um erro será emitido pelo compilador, como mostra o Código 17.
+```kt
+protected class Medicamento constructor(val formula: String, var posologia: String)
+```
+**Error:(3, 1) Kotlin: Modifier 'protected' is not applicable inside 'file'**
+
+*Código 17. Erro do compilador*
+
+### No Código 18 utilizamos o modificador protected, que é sintaticamente permitido porque Tributacao não está em nível de arquivo e é uma classe aninhada em Medicamento.
+```kt
+class Medicamento {
+
+    protected class Tributacao
+}
+```
+*Código 18. Modificador protected*
+
+### Private é um nível de acesso que restringe o escopo de utilização da classe apenas ao arquivo no qual ela foi declarada.
+
+### Ao tentar utilizar uma classe private fora do arquivo no qual ela foi declarada, um erro será emitido pelo compilador prematuramente, no momento da sua importação, como mostra o Código 19.
+```kt
+private class Medicamento constructor(val formula: String, var posologia: String)
+
+import br.com.devmedia.kotlin.a.Medicamento
+
+fun main(args: Array) {
+     println(Medicamento("C8H9NO2", "...12 anos ou mais variam de 500 a 1000 mg/
+     dose com intervalos de 4 a 6 horas..."))
+}
+```
+**Error:(3, 33) Kotlin: Cannot access 
+'Medicamento': it is private in file**
+
+*Código 19. Modificador private*
+### Em Kotlin, a declaração de um pacote é feita com a palavra reservada package, seguida do nome do pacote. A importação de uma classe de outro pacote é feita com a palavra import, seguida do nome completo da classe.
+
+### O terceiro modificador de acesso é internal, que permite criar uma instância da classe em qualquer lugar no módulo no qual ela foi declarado. Para o Kotlin um módulo é um conjunto de fontes compilados juntos. Isso torna esse comportamento difícil de ser verificado em um mesmo módulo do Intellij IDEA, projeto do Maven, Ant task, etc.
+
 ## Hierarquia de classes e subclasses
 
-* criar uma hierarquia de classes, que é uma árvore de classes em que as classes filhas herdam a funcionalidade das classes pai. 
-     Propriedades e funções são herdadas por subclasses;
+### Herança é um dos três pilares da orientação a objetos. É através desse recurso que podemos estender ou modificar o comportamento de um código existente, promovendo a reutilização. Nesse processo a classe existente é chamada de superclasse e a classe a ser criada se chama classe derivada ou subclasse. Uma subclasse herda todos os membros presentes na superclasse por padrão.
 
-* criar uma classe abstract em que algumas funcionalidades podem ser implementados pelas subclasses. 
-    Portanto, uma classe abstract não pode ser instanciada;
+### A herança pode ocorrer em forma de generalização e especificação. Quando um conjunto de classes, geralmente concretas, exigem uma superclasse, dizemos que as características que elas compartilham serão combinadas em uma superclasse generalizada. Considerando as classes hamburger e pizza, ambas produtos do cardápio de uma lanchonete, pensar que elas se generalizam na superclasse Food é logicamente plausível. De outra forma, pensar que Food se especializa em toppings, um tipo de alimento que geralmente acompanha um outro alimento, é natural. Apresentar como utilizar esses mecanismos em Kotlin é o objeto deste artigo.
+## Herança
 
-* criar subclasses de uma classe abstract;
+### Toda classe em Kotlin possui um supertipo chamado Any, que possui apenas um pequeno número de funções, as quais são equals(), hashCode() e toString(). Dessa forma, ambas as declarações abaixo são sintaticamente equivalentes:
+```kt
 
-* usar a palavra-chave override para modificar propriedades e funções em subclasses;
+class Food(val price: Double)
 
-* usar a palavra-chave super para referenciar funções e propriedades na classe pai;
+class Food(val price: Double) : Any()
+```
 
-* criar uma classe open para que ela possa ser transformada em subclasse;
+### Para declarar um supertipo explicitamente devemos colocá-lo no cabeçalho da classe após dois pontos. Por padrão, classes em Kotlin são final, se nenhum outro modificador for utilizado em sua declaração. Isso impede que qualquer classes seja usada como supertipo de uma outra classe. Assim sendo, é necessário que a superclasse utilize o modificador open como primeiro passo para que uma outra classe herde da mesma.
+```kt
 
-* criar uma propriedade private, para que só possa ser usada dentro da classe;
+open class Food(val price: Double)
 
-* usar a construção with para fazer várias chamadas na mesma instância do objeto;
+class Hamburger(price: Double) : Food(price)
+```
 
-* importar a funcionalidade da biblioteca kotlin.math. 
+### Kotlin não suporta herança múltipla, motivo pelo qual apenas uma classe pode ser incluída na lista de supertipos de uma outra classe.
+
+### Observe que no construtor primário da classe Hamburger não utilizamos a palavra reservada val antes do parâmetro price, o que fará com que a propriedade price em Food não seja sobrescrita. De fato, com essa sintaxe apenas recebemos um parâmetro no construtor primário de Hamburger e delegamos para o construtor primário de Food.
+
+### Note que embora a propriedade price seja final em Food, ela pode ser acessada através de uma instância de Hamburger, dessa forma:
+```kt
+
+val hamburger: Hamburger = Hamburger(2.89)
+
+println("Total: ${hamburger.price}")
+```
+
+### Esse é o comportamento natural para o modificador final. Caso seja necessário impedir que subclasses de Food acessem uma propriedade de uma superclasse, será preciso declará-la com um outro nível de acesso, usando os modificadores protected ou private.
+## Construtores secundários
+
+### Na ocasião da superclasse não declarar um construtor primário, cada um dos seus construtores secundários deve ser inicializado pela subclasse utilizando a palavra-chave super em lugar de this, assim como demonstrado abaixo.
+```kt
+open class Food {
+    open val price: Double
+
+    constructor(price: Double) {
+        this.price = price
+    }
+}
+
+class Hamburger : Food {
+    constructor(price: Double) : super(price)
+}
+```
+
+### A seguir, analisamos um novo exemplo, o qual evidencia o fato de uma subclasse poder referenciar quaisquer construtores secundários da superclasse.
+``` kt
+
+open class Food {
+    open var price: Double = 0.0
+    open var name: String = ""
+
+    constructor(price: Double) {
+        this.price = price
+    }
+
+    constructor(price: Double, name: String) {
+        this.price = price
+        this.name = name
+    }
+}
+
+class Hamburger : Food {
+    constructor(price: Double) : super(price)
+
+    constructor(price: Double, name: String) : super(price, name)
+}
+```
+
+### Dessa vez, na listagem de supertipos da classe Hamburger usamos a sintaxe Food em lugar de Food(), porque nesse contexto Food não possui um construtor primário.
+## Propriedades
+
+### É possível sobrescrever uma propriedade da superclasse na subclasse utilizando a palavra reservada override. Contudo, assim como as classes, propriedades em Kotlin também são final por definição e não podem ser sobrescritas ou herdadas sem a substituição explícita do modificador final por open. Vemos um exemplo disso no código abaixo.
+```kt
+
+open class Food(open val price: Double)
+
+class Hamburger(override val price: Double) : Food(price)
+```
+### Mesmo sobrescrevendo a propriedade price na subclasse é necessário delegar ao construtor da superclasse.
+
+### Uma subclasse pode incluir em seu construtor primário suas próprias propriedades. Considere que além de Hamburger a aplicação também contenha outros subtipos de Food, os quais seguem a sua própria cadeia de especificação, a fim de implementar um sistema de pedido no qual o cliente possa escolher adicionar para a sua comida. Poderíamos modelar a classe Topping da seguinte forma:
+```kt
+
+open class Topping(price: Double, private val food: Food) : Food(price) {
+
+    override val price: Double = price
+        get() = field + food.price
+}
+```
+
+#### A classe Topping, além de ser uma especificação de Food, também recebe um objeto do tipo Food como parâmetro em seu construtor. Uma vez que não desejamos sobrescrever a propriedade price, tratamos de receber um parâmetro no construtor, cujo valor é transferido para a propriedade através de delegação. Contudo, food é uma propriedade que existe apenas na subclasse e, por esse motivo, usamos o modificador private e a palavra reservada val para criar essa propriedade.
+
+### Apesar de a propriedade price não ser sobrescrita na subclasse, o seu getter é redefinido para retornar a instância de price no próprio objeto somada àquela presente na propriedade food.
+
+### Na linguagem Kotlin, o conceito de propriedade torna desnecessário escrever getters e setters, pois implicitamente os dados de um objeto são encapsulados através de métodos acessores implícitos. Contudo, se desejarmos sobrescrever o comportamento padrão de um método de acesso podemos usar essa sintaxe:
+```kt
+
+var <propriedade>[: <tipo>] [= <valor>]
+    [<getter>]
+    [<setter>]
+```
+
+### Assim como Food, uma vez que Topping também é modificada com open, ela também pode ser utilizada como um supertipo. A título de exemplo, vamos declarar os subtipos Jalapeno e Mushroom, ambos derivados de Topping.
+```kt
+
+class Jalapeno(price: Double, food: Food) : Topping(price, food)
+
+class Mushroom(price: Double, food: Food) : Topping(price, food)
+```
+### Feito isso, podemos instanciar um objeto a partir da composição de toppings e foods, usando até mesmo o supertipo como tipo para o objeto criado, tal qual apresentado a seguir.
+```kt
+val food: Food = Mushroom(
+    .10,
+    Jalapeno(
+        .15,
+        Jalapeno(
+            .15,
+            Hamburger(2.99)
+        )
+    )
+)
+```
+### Em tempo de execução, o compilador saberá qual implementação da propriedade price invocar em uma relação de herança. Dessa forma, podemos passar uma instância de Hamburger em lugar de um Food, em primeiro lugar porque Hamburger é um Food. Num segundo momento, ocorrerá um processo chamado late binding, no qual a JVM saberá que tipo do objeto é Hamburger, executando assim a versão sobrecarregada da propriedade price desse objeto.
+
+### Assim, ao executar a linha abaixo, o valor apresentado no terminal será a soma de todas propriedades price:
+```kt
+println("Total: ${food.price}") // Total: 3.39
+```
+## Acessando uma implementação da superclasse
+
+### A palavra reservada super pode ser utilizada também para acessar funções da superclasse. No exemplo abaixo, usamos esse recurso para oferecer na subclasse uma função que calcula o valor de um alimento, considerando tanto uma taxa quanto um desconto.
+```kt
+open class Food(open val price: Double) {
+
+    open fun calculate(fee: Double): Double {
+        return price * fee
+    }
+}
+
+class Hamburger(override val price: Double) : Food(price) {
+
+    fun calculate(fee: Double, discount: Double): Double {
+        return super.calculate(fee) - discount
+    }
+}
+```
+## É importante notar que a função calculate(fee: Double, discount: Double) existe apenas na subclasse. Sendo assim, caso haja uma tentativa de invocá-lo a partir de uma instância de Food um erro será emitido pelo compilador com a seguinte mensagem.
+```kt
+val food: Food = Mushroom(
+    .10,
+    Jalapeno(
+        .15,
+        Jalapeno(
+            .15,
+            Hamburger(2.99)
+        )
+    )
+)
+
+println("Total: ${food.calculate(1.2, 0.2)}")
+```
+#### *Error:(38, 43) Kotlin: Too many arguments for public open fun calculate(fee: Double): Double defined in Food*
+
+## Classes abstratas e interfaces
+
+### Uma classe abstrata, assim como os seus métodos abstratos, é open por padrão. Ao herdar de uma classe abstrata, todos os métodos abstratos da superclasse devem ser implementados na subclasse, a não ser que a mesma também seja abstrata. Caso contrário, um erro será emitido pelo compilador:
+```kt
+abstract class Food(open val price: Double) {
+
+    abstract fun calculate(fee: Double): Double
+}
+
+class Hamburger(price: Double) : Food(price)
+```
+#### *Class 'Hamburger' is not abstract and does not implement abstract base class member public abstract fun calculate(fee: Double): Double defined in Food*
+
+
+### Em Kotlin também é possível que uma classe abstrata herde de uma classe não abstrata. Quando isso for necessário, os métodos da superclasse não abstratos devem utilizar o modificador open.
+
+### Ainda que isso seja incomum, há casos em que uma classe herda de uma outra que compartilha um membro com alguma interface, implementada pela subclasse. Quando isso acontecer, podemos usar uma forma qualificada de super para acessar a implementação da superclasse. Vejamos um exemplo que deixará isso mais claro:
+```kt
+open class Food {
+    open fun calculate() { /* Alguma implementação aqui */ }
+}
+
+interface Calculable {
+    fun calculate() { /* Alguma implementação aqui */ }
+}
+
+class Hamburger : Food(), Calculable {
+    override fun calculate() {
+      super<Food>.calculate()
+      super<Calculable>.calculate()
+    }
+}
+```
+### Via de regra, sempre que uma classe herdar membros de mesmo nome de supertipos diferentes, ela mesma deve fornecer uma implementação para esse membro. No exemplo acima, a classe Hamburger fornece uma implementação para calculate, a qual invoca calculate() de Food e Calculable a partir de super qualificado.
    
    ## XML
    
