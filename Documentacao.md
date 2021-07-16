@@ -1,4 +1,32 @@
 # Informações úteis KOTLIN
+## Segurança no Koltin
+*comunicação segura* = proteger os dados do app, de uma forma atualizada
+
+*oferecer permissões corretas*
+
+### Dicas de segurança
+* usar o armazenamento interno e exeterno
+   ##### Obs: não armazene informações pessoais, pois são de fácil acceso
+* usar provedores de conteúdo
+* usar permissões
+
+### Segurança com dados
+#### *HTTPS e SSL*
+* Configurações de segurança na rede
+#### *SafetyNet*
+* Protege contra ameaças de segurança na rede
+
+### Criptografia
+* Android KeyStore = especificar provedor
+* Confirmação protegida por android
+* Funcionalidade suspensas
+
+### Dicas com o google play
+* App security improvement
+   #### *te envia notifiações com os problemas de segurança do app*
+* PHAs, aplicações potencialmente nocivas ou maliciosas
+  #### *PHAs desejados pelo usuário*
+  #### * PHAs são classificados
 
 ## Variáveis
 
@@ -819,7 +847,7 @@ class Hamburger : Food(), Calculable {
     
    * Para definir uma View com a largura máxima do ConstraintLayout, restrinja o início e o final dela como o início e o fim do elemento pai e defina a largura como 0 dp.
 #### EXEMPLO
-```
+```kt
 <ConstraintLayout>
     <TextView
         text="Hello World!">
