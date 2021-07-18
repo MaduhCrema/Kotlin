@@ -27,7 +27,12 @@
 * PHAs, aplicações potencialmente nocivas ou maliciosas
   #### *PHAs desejados pelo usuário*
   #### * PHAs são classificados
-
+### Android App Bundle
+#### *O Android App Bundle é o formato de publicação recomendado no Google Play. Ao publicar usando pacotes de apps, você pode reduzir o tamanho e simplificar as versões do app, além de ativar recursos avançados de distribuição.*
+#### saiba mais em **https://developer.android.com/guide/app-bundle**
+### Google Play Instant
+#### *O Google Play Instant permite que aplicativos e jogos nativos sejam iniciados em dispositivos sem ter que instalá-lo primeiro. Você pode criar esses tipos de experiência, chamados de apps instantâneos e jogos instantâneos, usando o Android Studio. Ao permitir que os usuários executem um app ou jogo instantâneo, ação conhecida como fornecer uma experiência instantânea, você melhora a descoberta do seu app ou jogo, o que ajuda a gerar mais instalações e conquistar mais usuários ativos.*
+####  saiba mais em **https://developer.android.com/topic/google-play-instant/overview**
 ## Variáveis
 
 * val(camelCase) -> não pode ser mudada posteriormente
