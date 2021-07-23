@@ -87,6 +87,11 @@ fun main (){
 * Fun Tipo.nomeDaFuncao();
 * Cria função que só pode ser chamada por um tipo, cujo valor pode ser referenciado dentro da função através da palavra **this**
 
+## Ordenação de dados
+```kt
+val values = listOf(1,3,4,5)
+values.sort()
+```
 ## Estruturas de Controle
 
 * Tanto para controle quanto para atribuição
@@ -137,7 +142,27 @@ for(i in/until/downTo(faixa de valores/condicional) 0..20 step 2(intervalo de co
     println(i)
 }
 ```
+### .forEach
+```kt
+fun main(){
+    val values = IntArray(5)
 
+    values[0]= 1
+    values[1]= 3
+    values[2]= 2
+    values[3]= 6
+    values[4]= 5
+
+    values.forEach{ it:Int
+        println(it)
+    }
+            OU
+
+     values.forEach{ cont ->
+        println(cont)
+    }
+}
+```
 ## Tipos de Dados
 
 * Int
@@ -823,7 +848,51 @@ class Hamburger : Food(), Calculable {
 }
 ```
 ### Via de regra, sempre que uma classe herdar membros de mesmo nome de supertipos diferentes, ela mesma deve fornecer uma implementação para esse membro. No exemplo acima, a classe Hamburger fornece uma implementação para calculate, a qual invoca calculate() de Food e Calculable a partir de super qualificado.
-   
+## COLLECTION
+### • Uma  coleção  é  uma  estrutura  de  dados  que  permite armazenar vários objetos.
+### As  operações  que  podem  ser  feitas  em  coleções variam mas normalmente incluem:
+#### • Adição de elementos;
+#### • Remoção de elementos;
+#### • Acesso aos elementos;
+#### • Pesquisa de elementos;
+### Existem vários tipode de collections iremos trabalhar agora com array.
+## *Array*
+Arrays são geralmente descritas como "lista de objetos"; elas são basicamente objetos que contem múltiplos valores armazenados em uma lista. Um objeto array pode ser armazenado em variáveis e ser tratado de forma muito similar a qualquer outro tipo de valor, a diferença está em podermos acessar cada valor dentro da lista individualmente, e fazer super úteis e eficientes coisas com a lista, como laço através da lista e fazer a mesma coisa para cada valor. Talvez nós pegamos uma série de produtos e seus preços armazenados em uma array, e nós queremos fazer um laço através de todos eles e mostrar em um recibo, enquanto somamos todos os preços e mostramos o preço total ao final.
+### Iniciando um array
+```kt
+fun main(){
+    val values = IntArray(size 5)
+
+    values[0]= 1
+    values[1]= 3
+    values[2]= 2
+    values[3]= 6
+    values[4]= 5
+
+    values.forEach{ it:Int
+        println(it)
+    }
+
+}
+```
+### Iniciando um array de string
+```kt
+fun main(){
+    val nomes = Array<String>(size 3){""}
+            ou
+    val nomes = Array(size 3){""} *deixando explicito que é uma string*
+            ou
+    val nomes = arrayOf("Maria","Fermino","Papagaio")
+
+    nomes[0] = "Maria"
+    nomes[1] = "Fermino"
+    nomes[2] = "Papagaio"
+
+    nomes.forEach{ it:String
+        println(it)
+    }
+}
+```
    ## XML
    
    * O XML (eXtensible Markup Language) é uma maneira de organizar textos e é composto por tags, elementos e atributos.
@@ -870,6 +939,6 @@ class Hamburger : Food(), Calculable {
 * Switch =  é um botão para sim ou não
 * Não é possível usar match_parent para nenhuma visualização do ConstraintLayout. Em vez disso, use 0dp, o que significa que as restrições serão igualadas.
 * android:checked =defice um padrão de qual lado estará acionado quando o app iniciar.true (ativado) ou false (desativado).
-* app:layout_constraintEnd_toEndOf = " " = Utiliza uma referencia para colocar o objeto no final horizontal da tela
+* app:layout_constraintEnd_toEndOf = " " = Utiliza uma referencia para colocar o objeto no final horizontal da tela.
 
 
