@@ -165,14 +165,11 @@ fun main(){
 ```
 ### .forEachIndexed
 ```kt
- val valores = DoubleArray(3)
+ val valores = DoubleArray(size 3)
     valores[0]=1233.54
     valores[1]=1200.78
     valores[2]=1500.80
-    valores.forEach{
-        println(it)
-    }
-    println("-----------------------")
+    
 //mexe com cada indice separadamente
     valores.forEachIndexed{ index, valor ->
         valores[index] = valor*1.1
@@ -919,20 +916,6 @@ fun main(){
 ```
 ### Iniciando um array de string
 ```kt
- val valores = DoubleArray(3)
-    valores[0]=1233.54
-    valores[1]=1200.78
-    valores[2]=1500.80
-    // OU
-val valores2 = doubleArrayOf(1500.0, 1340.2, 3343.43)
-
-valores.forEachIndexed{ index, valor ->
-        valores[index] = valor*1.1
-    }
-valores.forEach{
-        println(it)
-    }
-```
 fun main(){
     val nomes = Array<String>(size 3){""}
             ou
@@ -950,7 +933,22 @@ fun main(){
 }
 ```
 ### Iniciando um Double Array
-   ## XML
+```kt
+ val valores = DoubleArray(3)
+    valores[0]=1233.54
+    valores[1]=1200.78
+    valores[2]=1500.80
+    // OU
+val valores2 = doubleArrayOf(1500.0, 1340.2, 3343.43)
+
+valores.forEachIndexed{ index, valor ->
+        valores[index] = valor*1.1
+    }
+valores.forEach{
+        println(it)
+    }
+```
+ ## XML
    
    * O XML (eXtensible Markup Language) é uma maneira de organizar textos e é composto por tags, elementos e atributos.
     
