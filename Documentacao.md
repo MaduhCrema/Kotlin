@@ -163,6 +163,21 @@ fun main(){
     }
 }
 ```
+### .forEachIndexed
+```kt
+ val valores = DoubleArray(3)
+    valores[0]=1233.54
+    valores[1]=1200.78
+    valores[2]=1500.80
+    valores.forEach{
+        println(it)
+    }
+    println("-----------------------")
+//mexe com cada indice separadamente
+    valores.forEachIndexed{ index, valor ->
+        valores[index] = valor*1.1
+    }
+```
 ## Tipos de Dados
 
 * Int
@@ -228,6 +243,33 @@ println(Byte.MAX_VALUE)
     * Comando a.mod(b)
     * Atribuição a %= b
 
+## Operações maior,menor,média e filtro
+```kt
+//maior
+println("Maior salario: ${salarios.max()}")
+//menor
+println("Menor salario: ${salarios.min()}")
+//média
+println("Média salarial: ${salarios.average()}")
+// filtro
+    val salmaiorque2500 = salarios.filter{it > 2500}
+    println("====================")
+    salmaiorque2500.forEach{
+        println(it)
+    }
+```
+## Operações count, find e any
+```kt
+//se a expressão for verdadeira(boleana), imprime a quantidade de elementos
+    println(salarios.count{it in 2500.0..5000.0})
+//acha o que eu procuro, no caso o valor 1345.75, retorna o valor
+    println(salarios.find{it == 1345.75})    
+//caso que eu nao tenho o valor, imprime "NULL"
+    println(salarios.find{it == 1145.75})
+    
+//vai procurar dentro da lista um elemento que corresponda com a expressão, retorna exp. booleana
+    println(salarios.any{it == 1345.75})
+```
 ## Operadores Comparativos
 
 * Maior / Menor
@@ -877,6 +919,20 @@ fun main(){
 ```
 ### Iniciando um array de string
 ```kt
+ val valores = DoubleArray(3)
+    valores[0]=1233.54
+    valores[1]=1200.78
+    valores[2]=1500.80
+    // OU
+val valores2 = doubleArrayOf(1500.0, 1340.2, 3343.43)
+
+valores.forEachIndexed{ index, valor ->
+        valores[index] = valor*1.1
+    }
+valores.forEach{
+        println(it)
+    }
+```
 fun main(){
     val nomes = Array<String>(size 3){""}
             ou
@@ -893,6 +949,7 @@ fun main(){
     }
 }
 ```
+### Iniciando um Double Array
    ## XML
    
    * O XML (eXtensible Markup Language) é uma maneira de organizar textos e é composto por tags, elementos e atributos.
