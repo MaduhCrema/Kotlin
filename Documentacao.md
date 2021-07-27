@@ -255,6 +255,13 @@ println("Média salarial: ${salarios.average()}")
         println(it)
     }
 ```
+### As melhores expressõe spara maior ou menor são essas
+```kt
+//maior
+println("Maior salario: ${salarios.maxOrNull()}")
+//menor
+println("Menor salario: ${salarios.minOrNull()}")
+```
 ## Operações count, find e any
 ```kt
 //se a expressão for verdadeira(boleana), imprime a quantidade de elementos
@@ -266,6 +273,42 @@ println("Média salarial: ${salarios.average()}")
     
 //vai procurar dentro da lista um elemento que corresponda com a expressão, retorna exp. booleana
     println(salarios.any{it == 1345.75})
+```
+## Operações com listOf,sortedBy e groupBy
+### listOf é uma lista não mutável
+```kt
+fun main() {
+    val joao = funcionario("joao", 1200.0, "CLT")
+    val pedro = funcionario("pedro", 1100.90,"PJ")
+    val maria = funcionario("maria", 1250.45,"CLT")
+
+    //inicializar a lista
+    val funcionarios = listOf(joao, pedro, maria)
+        funcionarios.forEach{
+            println(it)
+       }
+    println("-------------------------")
+    println(funcionarios.find{it.nome == "maria"})
+    println("------------------------")
+    //ordenar qual parametro, no caso salario e imprime
+    funcionarios.sortedBy{it.salario}.forEach{println(it)}
+    println("------------------------")
+    //agrupa por parametro, no caso tipoContratacao  e imprime
+    funcionarios.groupBy{it.tipoContratacao}.forEach{println(it)}
+}
+data class funcionario(
+    val nome:String, 
+    val salario:Double,
+    val tipoContratacao:String
+    ) {
+    // função que para printar de formar organizada
+    override fun toString(): String =
+            """
+                nome: $nome
+                salário: $salario  
+                          
+            """.trimIndent()
+}
 ```
 ## Operadores Comparativos
 
