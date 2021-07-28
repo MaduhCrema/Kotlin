@@ -296,6 +296,7 @@ fun main() {
     //agrupa por parametro, no caso tipoContratacao  e imprime
     funcionarios.groupBy{it.tipoContratacao}.forEach{println(it)}
 }
+
 data class funcionario(
     val nome:String, 
     val salario:Double,
@@ -308,6 +309,43 @@ data class funcionario(
                 salário: $salario  
                           
             """.trimIndent()
+}
+```
+## setOf
+```kt
+fun main() {
+    val pedro = funcionario("pedro",1500.0,"PJ")
+    val marcia = funcionario("marcia", 1340.80,"CLT")
+    val gabriel = funcionario("gabriel",1230.90,"PJ")
+// setOf serve para criar um conjunto com os elementos que você quer
+    val  funcionarios1= setOf(pedro,gabriel)
+    val funcionarios2 = setOf(marcia)
+    //uniao dos dois conjuntos
+    val result = funcionarios1.union(funcionarios2)
+    result.forEach{println(it)}
+// subtração de conjuntos
+    println("-----------------")
+    val  funcionarios3= setOf(pedro,gabriel,marcia)
+    val resultsub = funcionarios3.subtract(funcionarios2)
+    resultsub.forEach{println(it)}
+    //mostra a intersecção dos dois conjuntos
+    println("------------------")
+    val resultinter = funcionarios3.intersect(funcionarios2)
+    resultinter.forEach{println(it)}
+}
+```
+## mapOf
+```kt
+fun main() {
+// cria  parametros
+    val pair: Pair<String, Double> = Pair("João", 1500.90)
+//alocação de mapa de cada pair
+    val map1 = mapOf(pair)
+//inicialização com dois "it", onde tem o nome e o valor
+    map1.forEach{(k, v) -> println("Chave: $k e valor: $v")}
+//outra forma  de inicializar o mapa por infix
+    val map2 = mapOf("pedro" to 2500.0, "maria" to 3450.90)
+    map2.forEach{(k, v) -> println("Chave: $k e valor: $v")}
 }
 ```
 ## Operadores Comparativos
