@@ -348,6 +348,87 @@ fun main() {
     map2.forEach{(k, v) -> println("Chave: $k e valor: $v")}
 }
 ```
+## Operações com setOf, mapOf
+### mutablelistOf é uma lista mutável
+### *setOf*
+```kt
+fun main(){
+    val joao = funcionario("joao", 1200.0, "CLT")
+    val pedro = funcionario("pedro", 1100.90,"PJ")
+    val maria = funcionario("maria", 1250.45,"CLT")
+
+    val funcionarios = mutableListOf(joao, maria)
+    funcionarios.forEach{println(it)}
+
+    println("------------------")
+    //novo funcionario na lista mutável
+    funcionarios.add(pedro)
+    funcionarios.forEach{println(it)}
+    println("------------------")
+   // exclui funcionaio
+    funcionarios.remove(joao)
+    funcionarios.forEach{println(it)}
+
+    println("---------SET---------")
+    val funcionarioset = mutableSetOf(joao)
+    funcionarioset.forEach{println(it)}
+
+    println("------------------")
+    //adicionou mais funcionario ao setOf mutável
+    funcionarioset.add(maria)
+    funcionarioset.add(pedro)
+    funcionarioset.forEach{println(it)}
+    println("------------------")
+    //removeu maria do setOf
+    funcionarioset.remove(maria)
+    funcionarioset.forEach{println(it)}
+
+}
+```
+### *mapOf*
+```kt
+
+class repositorio<T> {
+    //T = valor generico
+    private val map = mutableMapOf<String, T>()
+
+    fun create(id:String,value:T){
+        //put
+        map[id] = value
+    }
+    //retornar o valor de acordo com o  Id
+    fun findById(id:String) = map[id]
+
+    //traz todos os valores de T, ou seja todos os funcionarios
+    fun findAll() = map.values
+
+    //exclui os elementos
+    fun remove(id:String) = map.remove(id)
+
+}
+----------------------------------------------
+fun main() {
+    val joao = funcionario("joao", 1200.0, "CLT")
+    val pedro = funcionario("pedro", 1100.90,"PJ")
+    val maria = funcionario("maria", 1250.45,"CLT")
+
+    val repositorio = repositorio<funcionario>()
+
+    repositorio.create(joao.nome,joao)
+    repositorio.create(maria.nome,maria)
+    repositorio.create(pedro.nome,pedro)
+
+    println(repositorio.findById(joao.nome))
+
+    println("-----------------------------")
+    repositorio.findAll().forEach{println(it)}
+
+    println("-----------------------------")
+    println("Removida: ${repositorio.remove(maria.nome)}")
+
+}
+```
+
 ## Operadores Comparativos
 
 * Maior / Menor
