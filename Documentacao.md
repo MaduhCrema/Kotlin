@@ -428,7 +428,31 @@ fun main() {
 
 }
 ```
+## Funções estendidas
+### Utilizada para criar funções para uma classe específica, sem precisar herdar a classe.
+```kt
+import java.math.BigDecimal
+// chama array, pois a lista é de arrayOf, bigDecimal o Tipo
+//.somatoria() o nome da função
+//this.reduce acumula os elementos na somatoria, acc é onde acumular e soma o valor
+fun Array<BigDecimal>.somatoria()= this.reduce{
+    acc,valor -> acc + valor
+}
+//.media() nome da função
+//se a media estiver vazia o bigDecimal recebe zero
+//se não ocorre a somatoria / pelo tamanho do Array e convertido para bigDecimal
+fun Array<BigDecimal>.media()=
+    if(this.isEmpty()) BigDecimal.ZERO
+    else this.somatoria() / this.size.toBigDecimal()
 
+
+fun main() {
+    val salarios = arrayOf("2000".toBigDecimal(),"4500".toBigDecimal(),"1290".toBigDecimal())
+
+    println("Soma = ${salarios.somatoria()}")
+    println("Média = ${salarios.media()}")
+}
+```
 ## Operadores Comparativos
 
 * Maior / Menor
